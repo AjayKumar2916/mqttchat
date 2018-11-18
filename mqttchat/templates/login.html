@@ -1,0 +1,22 @@
+{% extends 'base_site.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="container" style="margin-top:200px">
+    <form class="form-inline" align="center" action="." method="POST">{% csrf_token %}
+        <h2>PUBSUB</h2>
+        <div class="form-group">
+            <label class="sr-only" for="username">UserName:</label>
+            <input type="text" class="form-control input-lg" id="username" placeholder="Username" name="username" required="required">
+        </div>
+        <br>
+        <br>
+        <div class="form-group">
+            <label class="sr-only" for="password">Password:</label>
+            <input type="password" class="form-control input-lg" id="password" placeholder="Password" name="password" required="required">
+        </div>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+    </form>
+</div>
+{% endblock %}

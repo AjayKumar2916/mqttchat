@@ -1,0 +1,10 @@
+cd mqttchat
+virtualvenv venv
+source venv/bin/activate
+cd mqttchat
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuper
+Login into django admin and create some users and topics and suscribers
+Login into the dashbaord with created users
+Select the topics and start sending massages

@@ -1,0 +1,9 @@
+*.pyc
+*.~
+db.sqlite3
+local_settings.py
+venv
+staticfiles
+.idea
+media
+*.~_

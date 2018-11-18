@@ -1,0 +1,4 @@
+Django==1.11.16
+django-jsonify==0.3.0
+paho-mqtt==1.4.0
+pytz==2018.7

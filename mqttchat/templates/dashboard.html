@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load jsonify %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<style type="text/css">
+    .list-group{
+        max-height: 50vh;
+        margin-bottom: 10px;
+        overflow-y:scroll;
+        overflow-x:hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+</style>
+<div class="card">
+  <div class="card-header bg-custom text-uppercase text-white font-weight-bold">
+    {{topic_name}}
+  </div>
+  <div class="card-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <form id="publishform" method="post">{% csrf_token %}
+                <div class="input-group">
+                  <input type="text" class="form-control form-control-lg" placeholder="Message" id="pubmsg">
+                  <div class="input-group-append">
+                    <button class="btn bg-custom btn-lg" type="button" id="msgsubmit" disabled="disabled">Send</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="list-group" id="msg">
+            </ul>
+        </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+
+$(document).ready(function () {
+    $(document).on('keydown', '#pubmsg', function(e) {
+        if ($(this).val() == '' || (e.keyCode == 32))
+        {
+            $('#msgsubmit').prop('disabled', true);
+        } else {
+            $('#msgsubmit').prop('disabled', false);
+        }
+    });
+    
+    setInterval(function() {
+        $.ajax({
+            url: "{% url 'message' topicid %}",
+            type : "POST",            
+            success: function(data) {
+                msg_list = []
+                for(var i=0;i<=data.message_data_list.length-1;i++){
+                    var message = '<li class="list-group-item list-group-item-action flex-column align-items-start"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1"></h5><small class="text-uppercase">' + data.message_data_list[i].username + '</small></div><p class="mb-1 h4">' + data.message_data_list[i].message + '</p><small>' + data.message_data_list[i].timestamp + '</small></li>'
+                    
+                    msg_list.push(message)
+                }
+                $('#msg').html(msg_list)
+            },
+            error: function(err){
+                console.log(err)
+            }
+        });
+    }, 1000);
+
+    $("#msgsubmit").click(function(){
+        $.ajax({
+            url: "{% url 'publish'  %}",
+            type : "POST",
+            data : {'user_id' : {{user.id|jsonify}}, "topic": {{topic_name|jsonify}},"message" : $('#pubmsg').val()},          
+            success: function(data) {
+                console.log(data)
+                $('#pubmsg').val('')
+                $('#msgsubmit').attr('disabled', 'disabled');
+            },
+            error: function(err){
+                console.log(err)
+            }
+        });
+    });
+
+ });
+</script>
+{% endblock %}
