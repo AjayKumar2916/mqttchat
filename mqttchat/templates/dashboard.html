@@ -20,7 +20,7 @@
         <div class="col-sm-12">
             <form id="publishform" method="post">{% csrf_token %}
                 <div class="input-group">
-                  <input type="text" class="form-control form-control-lg" placeholder="Message" id="pubmsg">
+                  <input type="text" class="form-control form-control-lg" placeholder="Message" id="pubmsg" autocomplete="off">
                   <div class="input-group-append">
                     <button class="btn bg-custom btn-lg" type="button" id="msgsubmit" disabled="disabled">Send</button>
                   </div>
